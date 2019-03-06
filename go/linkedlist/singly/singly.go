@@ -2,7 +2,7 @@ package singly
 
 // ListNode linkedlist node
 type ListNode struct {
-	val  interface{}
+	Val  interface{}
 	Next *ListNode
 }
 
@@ -11,9 +11,10 @@ type LinkedList struct {
 	Head *ListNode
 }
 
-func newListNode(val interface{}) *ListNode {
+// NewListNode create a listnode
+func NewListNode(val interface{}) *ListNode {
 	return &ListNode{
-		val:  val,
+		Val:  val,
 		Next: nil,
 	}
 }
@@ -25,14 +26,14 @@ func NewLinkedList() *LinkedList {
 
 // InsertToHead insert a node to linkedlist head
 func (l *LinkedList) InsertToHead(val interface{}) {
-	node := newListNode(val)
+	node := NewListNode(val)
 	node.Next = l.Head
 	l.Head = node
 }
 
 // InsertToTail insert a node to linkedlist tail
 func (l *LinkedList) InsertToTail(val interface{}) {
-	node := newListNode(val)
+	node := NewListNode(val)
 	p := l.Head
 
 	if p == nil {
@@ -53,14 +54,14 @@ func (l *LinkedList) InsertBefore(existVal, val interface{}) {
 		return
 	}
 
-	if l.Head.val == existVal {
+	if l.Head.Val == existVal {
 		l.InsertToHead(val)
 		return
 	}
 
 	for p.Next != nil {
-		if p.Next.val == existVal {
-			node := newListNode(val)
+		if p.Next.Val == existVal {
+			node := NewListNode(val)
 			node.Next = p.Next
 			p.Next = node
 			return
@@ -77,8 +78,8 @@ func (l *LinkedList) InsertAfter(existVal, val interface{}) {
 	}
 
 	for p != nil {
-		if p.val == existVal {
-			node := newListNode(val)
+		if p.Val == existVal {
+			node := NewListNode(val)
 			node.Next = p.Next
 			p.Next = node
 		}
@@ -93,7 +94,7 @@ func (l *LinkedList) Delete(val interface{}) {
 	}
 
 	for {
-		if l.Head.val == val {
+		if l.Head.Val == val {
 			l.Head = l.Head.Next
 			continue
 		}
@@ -102,7 +103,7 @@ func (l *LinkedList) Delete(val interface{}) {
 
 	p := l.Head
 	for p.Next != nil {
-		if p.Next.val == val {
+		if p.Next.Val == val {
 			p.Next = p.Next.Next
 			continue
 		}
@@ -119,7 +120,7 @@ func (l LinkedList) Find(val interface{}) bool {
 	p := l.Head
 
 	for p != nil {
-		if p.val == val {
+		if p.Val == val {
 			return true
 		}
 		p = p.Next
@@ -136,7 +137,7 @@ func (l LinkedList) Traverse() (ret []interface{}) {
 	}
 
 	for p != nil {
-		ret = append(ret, p.val)
+		ret = append(ret, p.Val)
 		p = p.Next
 	}
 
