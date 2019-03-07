@@ -104,7 +104,7 @@ func (l LinkedListWithDummyHead) Size() (n int) {
 }
 
 // DeleteTail delete last val from the list
-func (l *LinkedListWithDummyHead) DeleteTail() {
+func (l *LinkedListWithDummyHead) DeleteTail() (val interface{}) {
 	p := l.DummyHead
 	for p.Next != nil {
 		if p.Next.Next == nil {
@@ -112,5 +112,32 @@ func (l *LinkedListWithDummyHead) DeleteTail() {
 		}
 		p = p.Next
 	}
+	val = p.Next.Val
 	p.Next = p.Next.Next
+	return
+}
+
+// DeleteHead delete val from head
+func (l *LinkedListWithDummyHead) DeleteHead() (val interface{}) {
+	p := l.DummyHead
+
+	if p.Next == nil {
+		return
+	}
+
+	val = p.Next.Val
+	p.Next = p.Next.Next
+	return
+}
+
+// GetHead get head val
+func (l *LinkedListWithDummyHead) GetHead() (val interface{}) {
+	p := l.DummyHead
+
+	if p.Next == nil {
+		return
+	}
+
+	val = p.Next.Val
+	return
 }
