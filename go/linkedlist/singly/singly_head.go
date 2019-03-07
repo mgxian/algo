@@ -92,3 +92,25 @@ func (l LinkedListWithDummyHead) Tranverse() (ret []interface{}) {
 	}
 	return
 }
+
+// Size get the size of the list
+func (l LinkedListWithDummyHead) Size() (n int) {
+	p := l.DummyHead.Next
+	for p != nil {
+		p = p.Next
+		n++
+	}
+	return
+}
+
+// DeleteTail delete last val from the list
+func (l *LinkedListWithDummyHead) DeleteTail() {
+	p := l.DummyHead
+	for p.Next != nil {
+		if p.Next.Next == nil {
+			break
+		}
+		p = p.Next
+	}
+	p.Next = p.Next.Next
+}
