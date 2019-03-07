@@ -82,6 +82,7 @@ func (l *LinkedList) InsertAfter(existVal, val interface{}) {
 			node := NewListNode(val)
 			node.Next = p.Next
 			p.Next = node
+			return
 		}
 		p = p.Next
 	}
@@ -129,7 +130,7 @@ func (l LinkedList) Find(val interface{}) bool {
 	return false
 }
 
-// Traverse print all val in linkedlist
+// Traverse return all val in linkedlist
 func (l LinkedList) Traverse() (ret []interface{}) {
 	p := l.Head
 	if p == nil {
