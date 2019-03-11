@@ -1,44 +1,124 @@
 package sort
 
-// Element is the wrap of the need sorted data
-type Element struct{}
+import (
+	"reflect"
+)
 
-// Sortable is the wrap of the Less
+// Sortable is interface that collections that want sort need implement
 type Sortable interface {
-	Less(e Element) bool
+	Len() int
+	Less(i, j int) bool
+	Swap(i, j int)
 }
 
-type MyInt struct {
-	Element
-	val int
-}
-
-func NewMyInt(val int) MyInt {
-	return MyInt{
-		val: val,
-	}
-}
-
-func (m MyInt) Less(aMyInt MyInt) bool {
-	if m.val < aMyInt.val {
-		return true
-	}
-
-	return false
-}
-
-func BubbleSort(data []Sortable) {
-	length := len(data)
+// BubbleSort is a implement of bubble sort
+func BubbleSort(data Sortable) {
+	length := data.Len()
 	for i := 0; i < length-1; i++ {
 		hasSwap := false
 		for j := length - 1; j > i; j-- {
-			if data[j].Less(data[j-1]) {
+			if data.Less(j, j-1) {
 				hasSwap = true
-				data[j], data[j-1] = data[j-1], data[j]
+				data.Swap(j, j-1)
 			}
 		}
 		if !hasSwap {
 			break
+		}
+	}
+}
+
+// InsertSort is a implement of insertion sort
+func InsertSort(data Sortable) {
+	length := data.Len()
+	for i := 1; i < length; i++ {
+		for j := i; j > 0; j-- {
+			if data.Less(j, j-1) {
+				data.Swap(j, j-1)
+			}
+		}
+	}
+}
+
+// SelectSort is a implement of select sort
+func SelectSort(data Sortable) {
+	length := data.Len()
+	for i := 0; i < length-1; i++ {
+		minIndex := i
+		for j := i + 1; j < length; j++ {
+			if data.Less(j, minIndex) {
+				minIndex = j
+			}
+		}
+		data.Swap(i, minIndex)
+	}
+}
+
+// ShellSort is a implement of shell sort
+func ShellSort(data Sortable) {
+	length := data.Len()
+	step := length / 2
+	for step > 0 {
+		for i := step; i < length; i += step {
+			for j := i; j > 0; j -= step {
+				if data.Less(j, j-step) {
+					data.Swap(j, j-step)
+				}
+			}
+		}
+		step = step / 2
+	}
+}
+
+// MergeSort is a implement of merge sort
+func MergeSort(data Sortable, start, end int) {
+	if start >= end {
+		return
+	}
+
+	mid := start + (end-start)/2
+	MergeSort(data, start, mid)
+	MergeSort(data, mid+1, end)
+
+	tmp := reflect.MakeSlice(reflect.TypeOf(data), 0, end-start+1)
+	i, j := start, mid+1
+	for i <= mid && j <= end {
+		if data.Less(j, i) {
+			tmp = reflect.Append(tmp, reflect.ValueOf(data).Index(j))
+			j++
+		} else {
+			tmp = reflect.Append(tmp, reflect.ValueOf(data).Index(i))
+			i++
+		}
+	}
+
+	m, n := i, mid
+	if j <= end {
+		m, n = j, end
+	}
+
+	for i := m; i <= n; i++ {
+		v := reflect.ValueOf(data).Index(i)
+		tmp = reflect.Append(tmp, v)
+	}
+
+	for i := 0; i <= end-start; i++ {
+		reflect.ValueOf(data).Index(start + i).Set(tmp.Index(i))
+	}
+}
+
+// QuickSort is a implement of quick sort
+func QuickSort(data Sortable, start, end int) {
+	if start >= end {
+		return
+	}
+
+	pivot := end
+	i := start
+	for j := start + 1; j <= end; j++ {
+		if data.Less(j, pivot) {
+			data.Swap(j, i)
+			i++
 		}
 	}
 }
