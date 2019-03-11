@@ -115,10 +115,29 @@ func QuickSort(data Sortable, start, end int) {
 
 	pivot := end
 	i := start
-	for j := start + 1; j <= end; j++ {
+	for j := start; j < end; j++ {
 		if data.Less(j, pivot) {
 			data.Swap(j, i)
 			i++
+		}
+	}
+	data.Swap(i, pivot)
+
+	QuickSort(data, start, i-1)
+	QuickSort(data, i+1, end)
+}
+
+// BucketSort is a implement of bucket sort
+func BucketSort(data Sortable) {
+	min, max := 0, 0
+	length := data.Len()
+	for i := 0; i < length; i++ {
+		if data.Less(i, min) {
+			min = i
+			continue
+		}
+		if data.Less(max, i) {
+			max = i
 		}
 	}
 }

@@ -73,3 +73,17 @@ func TestMergeSort(t *testing.T) {
 		}
 	}
 }
+
+func TestQuickSort(t *testing.T) {
+	numbers := []int{5, 3, 1, 2, 4, 8, 6, 9, 0, 7}
+	// numbers := []int{5, 3, 1}
+	expected := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
+	QuickSort(MyInts(numbers), 0, len(numbers)-1)
+	t.Log(numbers)
+
+	for i, num := range numbers {
+		if num != expected[i] {
+			t.Errorf("expected %d but got %d", expected[i], num)
+		}
+	}
+}
