@@ -2,12 +2,6 @@ package sort
 
 import "testing"
 
-type MyInts []int
-
-func (p MyInts) Len() int           { return len(p) }
-func (p MyInts) Less(i, j int) bool { return p[i] < p[j] }
-func (p MyInts) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
-
 func TestBubbleSort(t *testing.T) {
 	numbers := []int{5, 3, 1, 2, 4}
 	expected := []int{1, 2, 3, 4, 5}
@@ -21,10 +15,10 @@ func TestBubbleSort(t *testing.T) {
 	}
 }
 
-func TestInsertSort(t *testing.T) {
+func TestInsertionSort(t *testing.T) {
 	numbers := []int{5, 3, 1, 2, 4}
 	expected := []int{1, 2, 3, 4, 5}
-	InsertSort(MyInts(numbers))
+	InsertionSort(MyInts(numbers))
 	t.Log(numbers)
 
 	for i, num := range numbers {
@@ -34,10 +28,10 @@ func TestInsertSort(t *testing.T) {
 	}
 }
 
-func TestSelectSort(t *testing.T) {
+func TestSelectionSort(t *testing.T) {
 	numbers := []int{5, 3, 1, 2, 4}
 	expected := []int{1, 2, 3, 4, 5}
-	SelectSort(MyInts(numbers))
+	SelectionSort(MyInts(numbers))
 	t.Log(numbers)
 
 	for i, num := range numbers {
@@ -79,6 +73,45 @@ func TestQuickSort(t *testing.T) {
 	// numbers := []int{5, 3, 1}
 	expected := []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}
 	QuickSort(MyInts(numbers), 0, len(numbers)-1)
+	t.Log(numbers)
+
+	for i, num := range numbers {
+		if num != expected[i] {
+			t.Errorf("expected %d but got %d", expected[i], num)
+		}
+	}
+}
+
+func TestBucketSort(t *testing.T) {
+	numbers := []int{11, 22, 100, 34, 5, 47, 59, 60, 72, 88, 95, 15, 14, 16}
+	expected := []int{5, 11, 14, 15, 16, 22, 34, 47, 59, 60, 72, 88, 95, 100}
+	BucketSort(numbers)
+	t.Log(numbers)
+
+	for i, num := range numbers {
+		if num != expected[i] {
+			t.Errorf("expected %d but got %d", expected[i], num)
+		}
+	}
+}
+
+func TestCountingSort(t *testing.T) {
+	numbers := []int{11, 22, 100, 34, 5, 47, 59, 60, 72, 88, 95, 15, 14, 16}
+	expected := []int{5, 11, 14, 15, 16, 22, 34, 47, 59, 60, 72, 88, 95, 100}
+	CountingSort(numbers)
+	t.Log(numbers)
+
+	for i, num := range numbers {
+		if num != expected[i] {
+			t.Errorf("expected %d but got %d", expected[i], num)
+		}
+	}
+}
+
+func TestRadixSort(t *testing.T) {
+	numbers := []int{11, 22, 100, 34, 5, 47, 59, 60, 72, 88, 95, 15, 14, 16}
+	expected := []int{5, 11, 14, 15, 16, 22, 34, 47, 59, 60, 72, 88, 95, 100}
+	RadixSort(numbers)
 	t.Log(numbers)
 
 	for i, num := range numbers {

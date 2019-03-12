@@ -1,6 +1,7 @@
 package sort
 
 import (
+	"math"
 	"reflect"
 )
 
@@ -10,6 +11,12 @@ type Sortable interface {
 	Less(i, j int) bool
 	Swap(i, j int)
 }
+
+type MyInts []int
+
+func (p MyInts) Len() int           { return len(p) }
+func (p MyInts) Less(i, j int) bool { return p[i] < p[j] }
+func (p MyInts) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
 
 // BubbleSort is a implement of bubble sort
 func BubbleSort(data Sortable) {
@@ -28,8 +35,8 @@ func BubbleSort(data Sortable) {
 	}
 }
 
-// InsertSort is a implement of insertion sort
-func InsertSort(data Sortable) {
+// InsertionSort is a implement of insertion sort
+func InsertionSort(data Sortable) {
 	length := data.Len()
 	for i := 1; i < length; i++ {
 		for j := i; j > 0; j-- {
@@ -40,8 +47,8 @@ func InsertSort(data Sortable) {
 	}
 }
 
-// SelectSort is a implement of select sort
-func SelectSort(data Sortable) {
+// SelectionSort is a implement of select sort
+func SelectionSort(data Sortable) {
 	length := data.Len()
 	for i := 0; i < length-1; i++ {
 		minIndex := i
@@ -128,16 +135,105 @@ func QuickSort(data Sortable, start, end int) {
 }
 
 // BucketSort is a implement of bucket sort
-func BucketSort(data Sortable) {
+func BucketSort(data []int) {
 	min, max := 0, 0
-	length := data.Len()
-	for i := 0; i < length; i++ {
-		if data.Less(i, min) {
+	length := len(data)
+	for i := 1; i < length; i++ {
+		if data[i] < data[min] {
 			min = i
 			continue
 		}
-		if data.Less(max, i) {
+		if data[max] < data[i] {
 			max = i
+		}
+	}
+
+	bucketSize := 10
+	bucketCount := int((data[max]-data[min])/bucketSize) + 1
+	bucket := make([][]int, bucketCount)
+	for i := 0; i < length; i++ {
+		bucketNum := int((data[i] - data[min]) / bucketSize)
+		bucket[bucketNum] = append(bucket[bucketNum], data[i])
+	}
+
+	index := 0
+	for i := 0; i < bucketCount; i++ {
+		InsertionSort(MyInts(bucket[i]))
+		for _, v := range bucket[i] {
+			data[index] = v
+			index++
+		}
+	}
+}
+
+// CountingSort is a implement of counting sort
+func CountingSort(data []int) {
+	max := 0
+	length := len(data)
+	for i := 1; i < length; i++ {
+		if data[max] < data[i] {
+			max = i
+		}
+	}
+
+	count := make([]int, data[max]+1)
+	for i := 0; i < length; i++ {
+		count[data[i]]++
+	}
+
+	for i := 1; i < data[max]+1; i++ {
+		count[i] = count[i-1] + count[i]
+	}
+
+	tmp := make([]int, length)
+	for i := length - 1; i >= 0; i-- {
+		index := count[data[i]] - 1
+		tmp[index] = data[i]
+		count[data[i]]--
+	}
+
+	for i := 0; i < length; i++ {
+		data[i] = tmp[i]
+	}
+}
+
+// RadixSort is a implement of radix sort
+func RadixSort(data []int) {
+	max := data[0]
+	length := len(data)
+	for i := 1; i < length; i++ {
+		if max < data[i] {
+			max = data[i]
+		}
+	}
+
+	maxDigitalNumber := 1
+	for (max / 10) > 0 {
+		maxDigitalNumber++
+		max = max / 10
+	}
+
+	for n := 1; n <= maxDigitalNumber; n++ {
+		count := make([]int, 10)
+		for i := 0; i < length; i++ {
+			tmpDigital := data[i]/int(math.Pow10(n-1)) - (data[i]/int(math.Pow10(n)))*10
+			count[tmpDigital]++
+		}
+
+		for i := 1; i < 10; i++ {
+			count[i] += count[i-1]
+		}
+
+		tmp := make([]int, length)
+		for i := length - 1; i >= 0; i-- {
+			tmpDigital := data[i]/int(math.Pow10(n-1)) - (data[i]/int(math.Pow10(n)))*10
+			index := count[tmpDigital] - 1
+			tmp[index] = data[i]
+			count[tmpDigital]--
+		}
+
+		for i := 0; i < length; i++ {
+			data[i] = tmp[i]
 		}
 	}
 }
