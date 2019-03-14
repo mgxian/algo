@@ -120,3 +120,16 @@ func TestRadixSort(t *testing.T) {
 		}
 	}
 }
+
+func TestHeapSort(t *testing.T) {
+	numbers := []int{5, 3, 1, 7, 2, 4, 8, 6, 9, 7}
+	expected := []int{1, 2, 3, 4, 5, 6, 7, 7, 8, 9}
+	HeapSort(MyInts(numbers))
+	t.Log(numbers)
+
+	for i, num := range numbers {
+		if num != expected[i] {
+			t.Errorf("expected %d but got %d", expected[i], num)
+		}
+	}
+}

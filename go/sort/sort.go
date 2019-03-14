@@ -238,14 +238,40 @@ func RadixSort(data []int) {
 	}
 }
 
-func heapify(data Sortable, i int) {
+func heapify(data Sortable, n int, i int) {
+	length := n
+	for {
+		left := 2*i + 1
+		right := 2*i + 2
+		max := i
 
+		if left < length && data.Less(max, left) {
+			max = left
+		}
+
+		if right < length && data.Less(max, right) {
+			max = right
+		}
+
+		if max == i {
+			break
+		}
+
+		data.Swap(i, max)
+
+		i = max
+	}
 }
 
 // HeapSort is a implement of heap sort
 func HeapSort(data Sortable) {
 	length := data.Len()
 	for i := (length - 1) / 2; i >= 0; i-- {
-		heapify(data, i)
+		heapify(data, length, i)
+	}
+
+	for i := length - 1; i > 0; i-- {
+		data.Swap(i, 0)
+		heapify(data, i, 0)
 	}
 }
