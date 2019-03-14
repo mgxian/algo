@@ -237,3 +237,15 @@ func RadixSort(data []int) {
 		}
 	}
 }
+
+func heapify(data Sortable, i int) {
+
+}
+
+// HeapSort is a implement of heap sort
+func HeapSort(data Sortable) {
+	length := data.Len()
+	for i := (length - 1) / 2; i >= 0; i-- {
+		heapify(data, i)
+	}
+}
