@@ -12,6 +12,7 @@ type Sortable interface {
 	Swap(i, j int)
 }
 
+// MyInts is a wrap of []int
 type MyInts []int
 
 func (p MyInts) Len() int           { return len(p) }
