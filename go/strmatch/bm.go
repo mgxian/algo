@@ -2,6 +2,34 @@ package strmatch
 
 // BMSearch is a implement of Boyer-Moore search
 func BMSearch(s, pattern string) int {
+	bc := generateBC(pattern)
+	suffix, prefix := generateGS(pattern)
+	i := 0
+	for i <= len(s)-len(pattern) {
+		j := len(pattern) - 1
+		for j >= 0 {
+			if s[i+j] != pattern[j] {
+				break
+			}
+			j--
+		}
+		if j < 0 {
+			return i
+		}
+
+		x := j - bc[s[i+j]]
+		y := 0
+		if j < len(pattern)-1 {
+			y = moveByGS(j, len(pattern), suffix, prefix)
+		}
+
+		t := x
+		if y > x {
+			t = y
+		}
+
+		i += t
+	}
 
 	return -1
 }
@@ -10,7 +38,7 @@ func generateBC(pattern string) []int {
 	const CharacterSize int = 256
 	bc := make([]int, CharacterSize)
 
-	for i := range pattern {
+	for i := range bc {
 		bc[i] = -1
 	}
 
@@ -28,6 +56,7 @@ func generateGS(pattern string) ([]int, []bool) {
 
 	for i := range suffix {
 		suffix[i] = -1
+		prefix[i] = false
 	}
 
 	for i := 0; i < patternLength-1; i++ {
@@ -45,4 +74,19 @@ func generateGS(pattern string) ([]int, []bool) {
 	}
 
 	return suffix, prefix
+}
+
+func moveByGS(j, patternLength int, suffix []int, prefix []bool) int {
+	k := patternLength - 1 - j
+	if suffix[k] != -1 {
+		return j + 1 - suffix[k]
+	}
+
+	for i := j + 2; i <= patternLength-1; i++ {
+		if prefix[patternLength-i] == true {
+			return i
+		}
+	}
+
+	return patternLength
 }
