@@ -26,6 +26,14 @@ func TestBFSearch(t *testing.T) {
 	if expected != actual {
 		t.Errorf("expected %d, but got %d", expected, actual)
 	}
+
+	s = "acdabcde"
+	pattern = "bc"
+	expected = 4
+	actual = BFSearch(s, pattern)
+	if expected != actual {
+		t.Errorf("expected %d, but got %d", expected, actual)
+	}
 }
 
 func TestRKSearch(t *testing.T) {
@@ -48,6 +56,14 @@ func TestRKSearch(t *testing.T) {
 	s = "acbab"
 	pattern = "ab"
 	expected = 3
+	actual = RKSearch(s, pattern)
+	if expected != actual {
+		t.Errorf("expected %d, but got %d", expected, actual)
+	}
+
+	s = "acdabcde"
+	pattern = "bc"
+	expected = 4
 	actual = RKSearch(s, pattern)
 	if expected != actual {
 		t.Errorf("expected %d, but got %d", expected, actual)
@@ -75,6 +91,48 @@ func TestBMSearch(t *testing.T) {
 	pattern = "ab"
 	expected = 3
 	actual = BMSearch(s, pattern)
+	if expected != actual {
+		t.Errorf("expected %d, but got %d", expected, actual)
+	}
+
+	s = "acdabcde"
+	pattern = "bc"
+	expected = 4
+	actual = BMSearch(s, pattern)
+	if expected != actual {
+		t.Errorf("expected %d, but got %d", expected, actual)
+	}
+}
+
+func TestKMPSearch(t *testing.T) {
+	s := "a"
+	pattern := "ab"
+	expected := -1
+	actual := KMPSearch(s, pattern)
+	if expected != actual {
+		t.Errorf("expected %d, but got %d", expected, actual)
+	}
+
+	s = "aba"
+	pattern = "ab"
+	expected = 0
+	actual = KMPSearch(s, pattern)
+	if expected != actual {
+		t.Errorf("expected %d, but got %d", expected, actual)
+	}
+
+	s = "acbab"
+	pattern = "ab"
+	expected = 3
+	actual = KMPSearch(s, pattern)
+	if expected != actual {
+		t.Errorf("expected %d, but got %d", expected, actual)
+	}
+
+	s = "acdabcde"
+	pattern = "bc"
+	expected = 4
+	actual = KMPSearch(s, pattern)
 	if expected != actual {
 		t.Errorf("expected %d, but got %d", expected, actual)
 	}
