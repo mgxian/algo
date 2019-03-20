@@ -169,3 +169,46 @@ func TestKMPSearch(t *testing.T) {
 		t.Errorf("expected %d, but got %d", expected, actual)
 	}
 }
+
+func TestTrieTreeSearch(t *testing.T) {
+	strings := []string{"hi", "how", "her", "hello", "so", "see"}
+	aTrieTree := NewTrieTree()
+	for _, v := range strings {
+		aTrieTree.Insert(v)
+	}
+
+	s := "so"
+	expected := true
+	actual := aTrieTree.Search(s)
+	if expected != actual {
+		t.Errorf("expected %v, but got %v", expected, actual)
+	}
+
+	s = "hi"
+	expected = true
+	actual = aTrieTree.Search(s)
+	if expected != actual {
+		t.Errorf("expected %v, but got %v", expected, actual)
+	}
+
+	s = "his"
+	expected = false
+	actual = aTrieTree.Search(s)
+	if expected != actual {
+		t.Errorf("expected %v, but got %v", expected, actual)
+	}
+
+	s = "hell"
+	expected = false
+	actual = aTrieTree.Search(s)
+	if expected != actual {
+		t.Errorf("expected %v, but got %v", expected, actual)
+	}
+
+	s = "hello"
+	expected = true
+	actual = aTrieTree.Search(s)
+	if expected != actual {
+		t.Errorf("expected %v, but got %v", expected, actual)
+	}
+}
