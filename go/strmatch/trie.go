@@ -13,7 +13,7 @@ type TrieNode struct {
 func NewTrieNode(val byte) *TrieNode {
 	return &TrieNode{
 		val:      val,
-		children: make([]*TrieNode, 26),
+		children: make([]*TrieNode, charMAXSIZE),
 	}
 }
 

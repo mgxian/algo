@@ -212,3 +212,40 @@ func TestTrieTreeSearch(t *testing.T) {
 		t.Errorf("expected %v, but got %v", expected, actual)
 	}
 }
+
+func TestACAutomation(t *testing.T) {
+	strings := []string{"hi", "how", "her", "hello", "so", "see"}
+	aACAutomation := NewACAutomation()
+	for _, v := range strings {
+		aACAutomation.Insert(v)
+	}
+	aACAutomation.BuildACAutomation()
+
+	s := "s"
+	expected := 0
+	actual := aACAutomation.Match(s)
+	if expected != len(actual) {
+		t.Errorf("expected %v, but got %v", expected, actual)
+	}
+
+	s = "so"
+	expected = 1
+	actual = aACAutomation.Match(s)
+	if expected != len(actual) {
+		t.Errorf("expected %v, but got %v", expected, actual)
+	}
+
+	s = "andsoon"
+	expected = 1
+	actual = aACAutomation.Match(s)
+	if expected != len(actual) {
+		t.Errorf("expected %v, but got %v", expected, actual)
+	}
+
+	s = "howseeandgotoyouhi"
+	expected = 3
+	actual = aACAutomation.Match(s)
+	if expected != len(actual) {
+		t.Errorf("expected %v, but got %v", expected, actual)
+	}
+}
