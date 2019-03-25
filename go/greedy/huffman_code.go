@@ -1,9 +1,7 @@
 package greedy
 
 import (
-	"fmt"
-
-	"github.com/mgxian/algo/go/sort"
+	"container/heap"
 )
 
 const CharacterSize = 27
@@ -34,33 +32,49 @@ func (p Chars) Swap(i, j int) {
 	p[i], p[j] = p[j], p[i]
 }
 
-func (p Chars) String() string {
+func (p *Chars) Push(x interface{}) {
+	*p = append(*p, x.(Char))
+}
+
+func (p *Chars) Pop() interface{} {
+	old := *p
+	n := len(old)
+	x := old[n-1]
+	*p = old[0 : n-1]
+	return x
+}
+
+func (p *Chars) String() string {
 	ret := "chars: "
-	for _, c := range p {
-		ret += fmt.Sprintf("(%s: %d)", string(c.val), c.count)
+
+	for {
+		c := heap.Pop(p)
+		if c == nil {
+			break
+		}
+		// aChar := c.(Char)
+		// ret += fmt.Sprintf("(%s: %d)", string(aChar.val), aChar.count)
 	}
 
 	return ret
 }
 
-func NewChars(s string) Chars {
+func NewChars(s string) *Chars {
 	chars := make([]int, CharacterSize)
 	for _, v := range s {
 		index := v - 'a'
 		chars[index]++
 	}
 
-	var aChars Chars
+	aChars := make(Chars, 0)
+	heap.Init(&aChars)
 	for c, n := range chars {
 		if n != 0 {
 			aChar := NewChar(byte(c+'a'), n)
-			aChars = append(aChars, aChar)
+			heap.Push(&aChars, aChar)
 		}
 	}
-
-	sort.QuickSort(aChars, 0, len(aChars)-1)
-
-	return aChars
+	return &aChars
 }
 
 type treeNode struct {
@@ -81,4 +95,6 @@ func newTreeNode(c Char) *treeNode {
 // 	for i := 2; i < aChars.Len(); i++ {
 
 // 	}
+
+// 	heap.pu
 // }
