@@ -21,3 +21,12 @@ func TestZeroOneBagWithCache(t *testing.T) {
 	zeroOneBagWithCache(0, 0, items, limitedWeight, &maxWeight, cache)
 	t.Log(maxWeight)
 }
+
+func TestZeroOneBagWithValue(t *testing.T) {
+	items := []int{2, 2, 4, 6, 3}
+	value := []int{3, 4, 8, 9, 6}
+	limitedWeight := 9
+	maxValue := -1
+	zeroOneBagWithValue(0, 0, 0, items, value, limitedWeight, &maxValue)
+	t.Log(maxValue)
+}
