@@ -1,5 +1,7 @@
 package dynamic
 
+import "math"
+
 func minDist(w [][]int) (min int) {
 	length := len(w)
 	states := make([][]int, length)
@@ -30,5 +32,34 @@ func minDist(w [][]int) (min int) {
 	}
 
 	min = states[length-1][length-1]
+	return
+}
+
+func minDist2(i, j int, w [][]int, cache [][]int) (min int) {
+	if i == 0 && j == 0 {
+		return w[0][0]
+	}
+
+	if cache[i][j] > 0 {
+		return cache[i][j]
+	}
+
+	minLeft := math.MaxInt64
+	if j-1 >= 0 {
+		minLeft = minDist2(i, j-1, w, cache)
+	}
+
+	minUp := math.MaxInt64
+	if i-1 >= 0 {
+		minUp = minDist2(i-1, j, w, cache)
+	}
+
+	min = minLeft
+	if min > minUp {
+		min = minUp
+	}
+
+	min += w[i][j]
+	cache[i][j] = min
 	return
 }
