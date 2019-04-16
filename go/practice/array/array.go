@@ -32,7 +32,9 @@ type SortedArrayInterface interface {
 	Capacity() int
 	Add(Value) error
 	Remove(Value) error
+	RemoveAll(Value) (int, error)
 	Replace(Value, Value) error
-	Find(Value, func(Value, Value) bool) int
+	Find(Value) int
+	FindAll(Value) []int
 	String() string
 }
