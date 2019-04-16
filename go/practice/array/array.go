@@ -25,3 +25,14 @@ type DynamicInterface interface {
 
 	String() string
 }
+
+// SortedArrayInterface is sorted array interface
+type SortedArrayInterface interface {
+	Len() int
+	Capacity() int
+	Add(Value) error
+	Remove(Value) error
+	Replace(Value, Value) error
+	Find(Value, func(Value, Value) bool) int
+	String() string
+}
