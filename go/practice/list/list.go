@@ -37,5 +37,5 @@ type List interface {
 	// PushFront inserts a new element e with value v to the front of the linked list.
 	PushFront(v interface{}) *Element
 	// Remove remove element e from the linked list and returns the element value.
-	Remove(e *Element)
+	Remove(e *Element) interface{}
 }
