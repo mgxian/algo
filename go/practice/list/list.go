@@ -18,9 +18,9 @@ func (e *Element) Next() *Element {
 
 // List is a interface that a linked list must implements.
 type List interface {
-	// Front returns the first element of linked list or nil if the linked list is empty.
+	// Front returns the first element of the linked list or nil if the linked list is empty.
 	Front() *Element
-	// Back returns the last element of linked list or nil if the linked list is empty.
+	// Back returns the last element of the linked list or nil if the linked list is empty.
 	Back() *Element
 	// Len returns the number of elements of the linked list.
 	Len() int
