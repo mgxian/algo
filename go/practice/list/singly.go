@@ -2,15 +2,18 @@ package list
 
 // SinglyLinkedList represents a singly linked list.
 type SinglyLinkedList struct {
-	head Element // sentinel list element
-	len  int     // current list length excluding (this) sentinel element
+	// sentinel list element
+	// head.next is the first element of the list
+	// head.pre is the last element of the list
+	head Element
+	len  int // current list length excluding (this) sentinel element
 }
 
 // NewSinglyLinkedList create a new initial SinglyLinkedList
 func NewSinglyLinkedList() *SinglyLinkedList {
 	l := new(SinglyLinkedList)
 	l.head.prev = &l.head
-	l.head.next = &l.head
+	l.head.next = nil
 	l.len = 0
 	return l
 }
@@ -49,14 +52,14 @@ func (l *SinglyLinkedList) insert(e, at *Element) *Element {
 
 // remove removes e from the linked list, decrements l.len, and return e.
 func (l *SinglyLinkedList) remove(e *Element) *Element {
-	if e.next == nil {
-		l.head.prev = e
-	}
 	p := &l.head
 	for p.next != e {
 		p = p.next
 	}
 	p.next = e.next
+	if e.next == nil {
+		l.head.prev = p
+	}
 	l.len--
 	return e
 }
