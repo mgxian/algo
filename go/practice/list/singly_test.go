@@ -187,6 +187,28 @@ func TestSinglyLinkedList(t *testing.T) {
 						So(l.Front(), ShouldEqual, e1)
 						So(l.Back(), ShouldEqual, e5)
 					})
+
+					Convey("When insert a element to the front of the SinglyLinkedList", func() {
+						e0 := l.InsertBefore(0, e1)
+
+						Convey("Then SinglyLinkedList should pass checkSinglyLinkedListPointers", func() {
+							So(checkSinglyLinkedListPointers(l, []*Element{e0, e1, e2, e3, e4, e5}), ShouldEqual, true)
+						})
+
+						So(l.Front(), ShouldEqual, e0)
+						So(l.Back(), ShouldEqual, e5)
+					})
+
+					Convey("When insert a element to the back of the SinglyLinkedList", func() {
+						e6 := l.InsertAfter(6, e5)
+
+						Convey("Then SinglyLinkedList should pass checkSinglyLinkedListPointers", func() {
+							So(checkSinglyLinkedListPointers(l, []*Element{e1, e2, e3, e4, e5, e6}), ShouldEqual, true)
+						})
+
+						So(l.Front(), ShouldEqual, e1)
+						So(l.Back(), ShouldEqual, e6)
+					})
 				})
 			})
 		})
