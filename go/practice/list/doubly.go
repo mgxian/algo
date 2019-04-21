@@ -43,7 +43,9 @@ func (l *DoublyLinkedList) insert(e, at *Element) *Element {
 
 	e.next = at.next
 	e.prev = at
-	at.next.prev = e
+	if at.next != nil {
+		at.next.prev = e
+	}
 	at.next = e
 
 	l.len++
@@ -60,23 +62,37 @@ func (l *DoublyLinkedList) remove(e *Element) *Element {
 	}
 
 	e.prev.next = e.next
-	e.next.prev = e.prev
+	if e.next != nil {
+		e.next.prev = e.prev
+	}
 
 	l.len--
 	return e
 }
 
 func (l *DoublyLinkedList) move(e, at *Element) *Element {
+	if e == at {
+		return e
+	}
+
 	if at.next == nil {
 		l.head.prev = e
 	}
 
+	if e.next == nil {
+		l.head.prev = e.prev
+	}
+
 	e.prev.next = e.next
-	e.next.prev = e.prev
+	if e.next != nil {
+		e.next.prev = e.prev
+	}
 
 	e.next = at.next
 	e.prev = at
-	at.next.prev = e
+	if at.next != nil {
+		at.next.prev = e
+	}
 	at.next = e
 
 	return e
