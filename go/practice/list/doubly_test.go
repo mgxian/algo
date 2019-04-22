@@ -251,3 +251,41 @@ func TestDoublyLinkedListMoveToFront(t *testing.T) {
 		})
 	})
 }
+
+func TestDoublyLinkedListRemove(t *testing.T) {
+	Convey("Test doubly linked list Remove", t, func() {
+		Convey("Setup", func() {
+			l := NewDoublyLinkedList()
+
+			Convey("Test single element doubly linked list", func() {
+				e := l.PushBack(1)
+				l.Remove(e)
+				So(checkDoublyLinkedListPointers(l, []*Element{}), ShouldEqual, true)
+			})
+
+			Convey("Test more elements doubly linked list remove first element", func() {
+				e1 := l.PushBack(1)
+				e2 := l.PushBack(2)
+				e3 := l.PushBack(3)
+				l.Remove(e1)
+				So(checkDoublyLinkedListPointers(l, []*Element{e2, e3}), ShouldEqual, true)
+			})
+
+			Convey("Test more elements doubly linked list remove last element", func() {
+				e1 := l.PushBack(1)
+				e2 := l.PushBack(2)
+				e3 := l.PushBack(3)
+				l.Remove(e3)
+				So(checkDoublyLinkedListPointers(l, []*Element{e1, e2}), ShouldEqual, true)
+			})
+
+			Convey("Test more elements doubly linked list remove middle element", func() {
+				e1 := l.PushBack(1)
+				e2 := l.PushBack(2)
+				e3 := l.PushBack(3)
+				l.Remove(e2)
+				So(checkDoublyLinkedListPointers(l, []*Element{e1, e3}), ShouldEqual, true)
+			})
+		})
+	})
+}
