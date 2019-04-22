@@ -41,12 +41,13 @@ func (l *DoublyLinkedList) insert(e, at *Element) *Element {
 		l.head.prev = e
 	}
 
-	e.next = at.next
-	e.prev = at
-	if at.next != nil {
-		at.next.prev = e
-	}
+	n := at.next
 	at.next = e
+	e.prev = at
+	e.next = n
+	if n != nil {
+		n.prev = e
+	}
 
 	l.len++
 	return e
@@ -88,12 +89,13 @@ func (l *DoublyLinkedList) move(e, at *Element) *Element {
 		e.next.prev = e.prev
 	}
 
-	e.next = at.next
-	e.prev = at
-	if at.next != nil {
-		at.next.prev = e
-	}
+	n := at.next
 	at.next = e
+	e.prev = at
+	e.next = n
+	if n != nil {
+		n.prev = e
+	}
 
 	return e
 }
@@ -110,11 +112,17 @@ func (l *DoublyLinkedList) InsertBefore(v interface{}, mark *Element) *Element {
 
 // MoveToBack moves element e to the back of the linked list.
 func (l *DoublyLinkedList) MoveToBack(e *Element) {
+	if l.head.prev == e {
+		return
+	}
 	l.move(e, l.head.prev)
 }
 
 // MoveToFront moves element e to the front of the linked list.
 func (l *DoublyLinkedList) MoveToFront(e *Element) {
+	if l.head.next == e {
+		return
+	}
 	l.move(e, &l.head)
 }
 
