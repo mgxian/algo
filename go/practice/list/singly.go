@@ -140,3 +140,21 @@ func (l *SinglyLinkedList) Remove(e *Element) interface{} {
 	l.remove(e)
 	return e.Value
 }
+
+// Reverse reverse the linked list
+func (l *SinglyLinkedList) Reverse() {
+	if l.len <= 1 {
+		return
+	}
+
+	var prev *Element
+	current := l.head.next
+	l.head.prev = current
+	for current != nil {
+		n := current.next
+		current.next = prev
+		prev = current
+		current = n
+	}
+	l.head.next = prev
+}
