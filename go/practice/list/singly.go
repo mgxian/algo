@@ -66,16 +66,27 @@ func (l *SinglyLinkedList) remove(e *Element) *Element {
 
 // move moves e to next to at and returns e.
 func (l *SinglyLinkedList) move(e, at *Element) *Element {
+	if e == at {
+		return e
+	}
+
 	if at.next == nil {
 		l.head.prev = e
 	}
+
 	p := &l.head
 	for p.next != e {
 		p = p.next
 	}
+
+	if e.next == nil {
+		l.head.prev = p
+	}
+
 	p.next = e.next
 	e.next = at.next
 	at.next = e
+
 	return e
 }
 
@@ -100,11 +111,17 @@ func (l *SinglyLinkedList) InsertBefore(v interface{}, mark *Element) *Element {
 
 // MoveToBack moves element e to the back of the linked list.
 func (l *SinglyLinkedList) MoveToBack(e *Element) {
+	if l.head.prev == e {
+		return
+	}
 	l.move(e, l.head.prev)
 }
 
 // MoveToFront moves element e to the front of the linked list.
 func (l *SinglyLinkedList) MoveToFront(e *Element) {
+	if l.head.next == e {
+		return
+	}
 	l.move(e, &l.head)
 }
 

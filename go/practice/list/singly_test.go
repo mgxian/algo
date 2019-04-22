@@ -1,13 +1,42 @@
 package list
 
 import (
+	"fmt"
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
 )
 
 func checkSinglyLinkedListLen(l *SinglyLinkedList, es []*Element) bool {
-	if len(es) != l.Len() {
+	return l.Len() == len(es)
+}
+
+func checkSinglyLinkedListNextPointers(l *SinglyLinkedList, es []*Element) bool {
+	prev := &l.head
+	for _, e := range es {
+		if prev.next != e {
+			return false
+		}
+		prev = prev.next
+	}
+	back := es[len(es)-1]
+	if back.next != nil {
+		return false
+	}
+	return true
+}
+
+func checkSinglyLinkedListPrevPointers(l *SinglyLinkedList, es []*Element) bool {
+	back := es[len(es)-1]
+	if l.head.prev != back {
+		return false
+	}
+
+	return true
+}
+
+func checkEmptySinglyLinkedListPointers(l *SinglyLinkedList) bool {
+	if (l.head.next != nil && l.head.next != &l.head) || (l.head.prev != nil && l.head.prev != &l.head) {
 		return false
 	}
 	return true
@@ -15,244 +44,240 @@ func checkSinglyLinkedListLen(l *SinglyLinkedList, es []*Element) bool {
 
 func checkSinglyLinkedListPointers(l *SinglyLinkedList, es []*Element) bool {
 	if !checkSinglyLinkedListLen(l, es) {
+		fmt.Println("len")
 		return false
 	}
 
 	if len(es) == 0 {
-		if (l.head.next != nil && l.head.next != &l.head) || (l.head.prev != nil && l.head.prev != &l.head) {
-			return false
-		}
-		return true
+		return checkEmptySinglyLinkedListPointers(l)
 	}
 
-	result := true
-	prev := &l.head
-	for _, e := range es {
-		if prev.next != e {
-			result = false
-			break
-		}
-		prev = e
+	if !checkSinglyLinkedListNextPointers(l, es) {
+		fmt.Println("next")
+		return false
 	}
 
-	back := es[len(es)-1]
-	if back.next != nil || l.head.prev != back {
-		result = false
+	if !checkSinglyLinkedListPrevPointers(l, es) {
+		fmt.Println("prev")
+		return false
 	}
-	return result
+
+	return true
 }
 
-func TestSinglyLinkedList(t *testing.T) {
-	Convey("Test Single element SinglyLinkedList", t, func() {
-		Convey("Test PushFront", func() {
-			Convey("Given an empty SinglyLinkedList", func() {
-				l := NewSinglyLinkedList()
+func TestSinglyLinkedListPushBack(t *testing.T) {
+	Convey("Test doubly linked list PushBack", t, func() {
+		Convey("Setup", func() {
+			l := NewSinglyLinkedList()
 
-				So(l.Front(), ShouldBeNil)
-				So(l.Back(), ShouldBeNil)
-
-				Convey("When PushFront a element to the SinglyLinkedList", func() {
-					e := l.PushFront("a")
-
-					Convey("Then SinglyLinkedList should pass checkSinglyLinkedListPointers", func() {
-						So(checkSinglyLinkedListPointers(l, []*Element{e}), ShouldEqual, true)
-					})
-
-					So(l.Front(), ShouldEqual, e)
-					So(l.Back(), ShouldEqual, e)
-
-					Convey("When Remove element from the SinglyLinkedList", func() {
-						l.Remove(e)
-
-						Convey("Then SinglyLinkedList should pass checkSinglyLinkedListPointers", func() {
-							So(checkSinglyLinkedListPointers(l, []*Element{}), ShouldEqual, true)
-						})
-
-						So(l.Front(), ShouldBeNil)
-						So(l.Back(), ShouldBeNil)
-					})
-				})
+			Convey("Test empty doubly linked list", func() {
+				So(checkSinglyLinkedListPointers(l, []*Element{}), ShouldEqual, true)
 			})
-		})
 
-		Convey("Test PushBack", func() {
-			Convey("Given an empty SinglyLinkedList", func() {
-				l := NewSinglyLinkedList()
+			Convey("Test push back single element doubly linked list", func() {
+				e := l.PushBack(1)
+				So(checkSinglyLinkedListPointers(l, []*Element{e}), ShouldEqual, true)
+			})
 
-				Convey("When PushBack a element to the SinglyLinkedList", func() {
-					e := l.PushBack("a")
-
-					Convey("Then SinglyLinkedList should pass checkSinglyLinkedListPointers", func() {
-						So(checkSinglyLinkedListPointers(l, []*Element{e}), ShouldEqual, true)
-					})
-
-					So(l.Front(), ShouldEqual, e)
-					So(l.Back(), ShouldEqual, e)
-
-					Convey("When Remove element from the SinglyLinkedList", func() {
-						l.Remove(e)
-
-						Convey("Then SinglyLinkedList should pass checkSinglyLinkedListPointers", func() {
-							So(checkSinglyLinkedListPointers(l, []*Element{}), ShouldEqual, true)
-						})
-
-						So(l.Front(), ShouldBeNil)
-						So(l.Back(), ShouldBeNil)
-					})
-				})
+			Convey("Test push back more elements doubly linked list", func() {
+				e1 := l.PushBack(1)
+				e2 := l.PushBack(2)
+				e3 := l.PushBack(3)
+				So(checkSinglyLinkedListPointers(l, []*Element{e1, e2, e3}), ShouldEqual, true)
 			})
 		})
 	})
+}
 
-	Convey("Test multiple elements SinglyLinkedList", t, func() {
-		Convey("Test PushFront", func() {
-			Convey("Given an empty SinglyLinkedList", func() {
-				l := NewSinglyLinkedList()
+func TestSinglyLinkedListPushFront(t *testing.T) {
+	Convey("Test doubly linked list PushFront", t, func() {
+		Convey("Setup", func() {
+			l := NewSinglyLinkedList()
 
-				Convey("When PushFront multiple elements to the SinglyLinkedList", func() {
-					e1 := l.PushFront(1)
-					e2 := l.PushFront(2)
-					e3 := l.PushFront(3)
-					e4 := l.PushFront(4)
-					e5 := l.PushFront("a")
+			Convey("Test push front single element doubly linked list", func() {
+				e := l.PushFront(1)
+				So(checkSinglyLinkedListPointers(l, []*Element{e}), ShouldEqual, true)
+			})
 
-					Convey("Then SinglyLinkedList should pass checkSinglyLinkedListPointers", func() {
-						So(checkSinglyLinkedListPointers(l, []*Element{e5, e4, e3, e2, e1}), ShouldEqual, true)
-					})
-
-					So(l.Front(), ShouldEqual, e5)
-					So(l.Back(), ShouldEqual, e1)
-
-					Convey("When Remove first element from the SinglyLinkedList", func() {
-						l.Remove(e5)
-
-						Convey("Then SinglyLinkedList should pass checkSinglyLinkedListPointers", func() {
-							So(checkSinglyLinkedListPointers(l, []*Element{e4, e3, e2, e1}), ShouldEqual, true)
-						})
-
-						So(l.Front(), ShouldEqual, e4)
-						So(l.Back(), ShouldEqual, e1)
-					})
-
-					Convey("When Remove last element from the SinglyLinkedList", func() {
-						l.Remove(e1)
-
-						Convey("Then SinglyLinkedList should pass checkSinglyLinkedListPointers", func() {
-							So(checkSinglyLinkedListPointers(l, []*Element{e5, e4, e3, e2}), ShouldEqual, true)
-						})
-
-						So(l.Front(), ShouldEqual, e5)
-						So(l.Back(), ShouldEqual, e2)
-					})
-				})
+			Convey("Test push front more elements doubly linked list", func() {
+				e1 := l.PushFront(1)
+				e2 := l.PushFront(2)
+				e3 := l.PushFront(3)
+				So(checkSinglyLinkedListPointers(l, []*Element{e3, e2, e1}), ShouldEqual, true)
 			})
 		})
+	})
+}
 
-		Convey("Test PushBack", func() {
-			Convey("Given an empty SinglyLinkedList", func() {
-				l := NewSinglyLinkedList()
+func TestSinglyLinkedListFrontBack(t *testing.T) {
+	Convey("Test doubly linked list Front and Back", t, func() {
+		Convey("Setup", func() {
+			l := NewSinglyLinkedList()
 
-				Convey("When PushBack multiple elements to the SinglyLinkedList", func() {
-					e1 := l.PushBack(1)
-					e2 := l.PushBack(2)
-					e3 := l.PushBack(3)
-					e4 := l.PushBack(4)
-					e5 := l.PushBack("a")
+			Convey("Test empty doubly linked list", func() {
+				So(l.Front(), ShouldBeNil)
+				So(l.Back(), ShouldBeNil)
+			})
 
-					Convey("Then SinglyLinkedList should pass checkSinglyLinkedListPointers", func() {
-						So(checkSinglyLinkedListPointers(l, []*Element{e1, e2, e3, e4, e5}), ShouldEqual, true)
-					})
+			Convey("Test push front single element doubly linked list", func() {
+				e := l.PushFront(1)
+				So(l.Front(), ShouldEqual, e)
+				So(l.Back(), ShouldEqual, e)
+			})
 
-					So(l.Front(), ShouldEqual, e1)
-					So(l.Back(), ShouldEqual, e5)
+			Convey("Test push back single element doubly linked list", func() {
+				e := l.PushBack(1)
+				So(l.Front(), ShouldEqual, e)
+				So(l.Back(), ShouldEqual, e)
+			})
 
-					Convey("When insert a element after an element to the SinglyLinkedList", func() {
-						e6 := l.InsertAfter(5, e4)
+			Convey("Test push front more elements doubly linked list", func() {
+				e1 := l.PushFront(1)
+				l.PushFront(2)
+				e3 := l.PushFront(3)
+				So(l.Front(), ShouldEqual, e3)
+				So(l.Back(), ShouldEqual, e1)
+			})
 
-						Convey("Then SinglyLinkedList should pass checkSinglyLinkedListPointers", func() {
-							So(checkSinglyLinkedListPointers(l, []*Element{e1, e2, e3, e4, e6, e5}), ShouldEqual, true)
-						})
+			Convey("Test push back more elements doubly linked list", func() {
+				e1 := l.PushBack(1)
+				l.PushBack(2)
+				e3 := l.PushBack(3)
+				So(l.Front(), ShouldEqual, e1)
+				So(l.Back(), ShouldEqual, e3)
+			})
 
-						So(l.Front(), ShouldEqual, e1)
-						So(l.Back(), ShouldEqual, e5)
-					})
-
-					Convey("When insert a element before an element to the SinglyLinkedList", func() {
-						e6 := l.InsertBefore(5, e5)
-
-						Convey("Then SinglyLinkedList should pass checkSinglyLinkedListPointers", func() {
-							So(checkSinglyLinkedListPointers(l, []*Element{e1, e2, e3, e4, e6, e5}), ShouldEqual, true)
-						})
-
-						So(l.Front(), ShouldEqual, e1)
-						So(l.Back(), ShouldEqual, e5)
-					})
-
-					Convey("When insert a element to the front of the SinglyLinkedList", func() {
-						e0 := l.InsertBefore(0, e1)
-
-						Convey("Then SinglyLinkedList should pass checkSinglyLinkedListPointers", func() {
-							So(checkSinglyLinkedListPointers(l, []*Element{e0, e1, e2, e3, e4, e5}), ShouldEqual, true)
-						})
-
-						So(l.Front(), ShouldEqual, e0)
-						So(l.Back(), ShouldEqual, e5)
-					})
-
-					Convey("When insert a element to the back of the SinglyLinkedList", func() {
-						e6 := l.InsertAfter(6, e5)
-
-						Convey("Then SinglyLinkedList should pass checkSinglyLinkedListPointers", func() {
-							So(checkSinglyLinkedListPointers(l, []*Element{e1, e2, e3, e4, e5, e6}), ShouldEqual, true)
-						})
-
-						So(l.Front(), ShouldEqual, e1)
-						So(l.Back(), ShouldEqual, e6)
-					})
-				})
+			Convey("Test push front and back more elements doubly linked list", func() {
+				l.PushFront(1)
+				l.PushFront(2)
+				l.PushFront(3)
+				e4 := l.PushBack(4)
+				e5 := l.PushFront(5)
+				So(l.Front(), ShouldEqual, e5)
+				So(l.Back(), ShouldEqual, e4)
 			})
 		})
+	})
+}
 
-		Convey("Test PushFront and PushBack", func() {
-			Convey("Given an empty SinglyLinkedList", func() {
-				l := NewSinglyLinkedList()
+func TestSinglyLinkedListInsertAfter(t *testing.T) {
+	Convey("Test doubly linked list InsertAfter", t, func() {
+		Convey("Setup", func() {
+			l := NewSinglyLinkedList()
 
-				Convey("When PushFront multiple elements to the SinglyLinkedList", func() {
-					e1 := l.PushFront(1)
-					e2 := l.PushBack(2)
-					e3 := l.PushBack(3)
-					e4 := l.PushFront(4)
-					e5 := l.PushBack("a")
+			Convey("Test InsertAfter single element doubly linked list", func() {
+				e := l.InsertAfter(1, &l.head)
+				So(checkSinglyLinkedListPointers(l, []*Element{e}), ShouldEqual, true)
+			})
 
-					Convey("Then SinglyLinkedList should pass checkSinglyLinkedListPointers", func() {
-						So(checkSinglyLinkedListPointers(l, []*Element{e4, e1, e2, e3, e5}), ShouldEqual, true)
-					})
+			Convey("Test InsertAfter more elements doubly linked list", func() {
+				e1 := l.InsertAfter(1, &l.head)
+				e2 := l.InsertAfter(2, e1)
+				e3 := l.InsertAfter(3, e2)
+				So(checkSinglyLinkedListPointers(l, []*Element{e1, e2, e3}), ShouldEqual, true)
+			})
+		})
+	})
+}
 
-					So(l.Front(), ShouldEqual, e4)
-					So(l.Back(), ShouldEqual, e5)
+func TestSinglyLinkedListInsertBefore(t *testing.T) {
+	Convey("Test doubly linked list InsertBefore", t, func() {
+		Convey("Setup", func() {
+			l := NewSinglyLinkedList()
 
-					Convey("When Move element to the front the SinglyLinkedList", func() {
-						l.MoveToFront(e1)
+			Convey("Test InsertBefore single element doubly linked list", func() {
+				e2 := l.InsertAfter(2, &l.head)
+				e1 := l.InsertBefore(1, e2)
+				So(checkSinglyLinkedListPointers(l, []*Element{e1, e2}), ShouldEqual, true)
+			})
 
-						Convey("Then SinglyLinkedList should pass checkSinglyLinkedListPointers", func() {
-							So(checkSinglyLinkedListPointers(l, []*Element{e1, e4, e2, e3, e5}), ShouldEqual, true)
-						})
+			Convey("Test InsertBefore more elements doubly linked list", func() {
+				e1 := l.InsertAfter(1, &l.head)
+				e2 := l.InsertBefore(2, e1)
+				e3 := l.InsertBefore(3, e2)
+				So(checkSinglyLinkedListPointers(l, []*Element{e3, e2, e1}), ShouldEqual, true)
+			})
+		})
+	})
+}
 
-						So(l.Front(), ShouldEqual, e1)
-						So(l.Back(), ShouldEqual, e5)
-					})
+func TestSinglyLinkedListMoveToBack(t *testing.T) {
+	Convey("Test doubly linked list MoveToBack", t, func() {
+		Convey("Setup", func() {
+			l := NewSinglyLinkedList()
 
-					Convey("When Move element to the back the SinglyLinkedList", func() {
-						l.MoveToBack(e4)
+			Convey("Test single element doubly linked list", func() {
+				e := l.PushBack(1)
+				l.MoveToBack(e)
+				So(checkSinglyLinkedListPointers(l, []*Element{e}), ShouldEqual, true)
+			})
 
-						Convey("Then SinglyLinkedList should pass checkSinglyLinkedListPointers", func() {
-							So(checkSinglyLinkedListPointers(l, []*Element{e1, e2, e3, e5, e4}), ShouldEqual, true)
-						})
+			Convey("Test more elements doubly linked list", func() {
+				e1 := l.PushBack(1)
+				e2 := l.PushBack(2)
+				e3 := l.PushBack(3)
+				l.MoveToBack(e1)
+				So(checkSinglyLinkedListPointers(l, []*Element{e2, e3, e1}), ShouldEqual, true)
+			})
+		})
+	})
+}
 
-						So(l.Front(), ShouldEqual, e1)
-						So(l.Back(), ShouldEqual, e4)
-					})
-				})
+func TestSinglyLinkedListMoveToFront(t *testing.T) {
+	Convey("Test doubly linked list MoveToFront", t, func() {
+		Convey("Setup", func() {
+			l := NewSinglyLinkedList()
+
+			Convey("Test single element doubly linked list", func() {
+				e := l.PushBack(1)
+				l.MoveToFront(e)
+				So(checkSinglyLinkedListPointers(l, []*Element{e}), ShouldEqual, true)
+			})
+
+			Convey("Test more elements doubly linked list", func() {
+				e1 := l.PushBack(1)
+				e2 := l.PushBack(2)
+				e3 := l.PushBack(3)
+				l.MoveToFront(e3)
+				So(checkSinglyLinkedListPointers(l, []*Element{e3, e1, e2}), ShouldEqual, true)
+			})
+		})
+	})
+}
+
+func TestSinglyLinkedListRemove(t *testing.T) {
+	Convey("Test doubly linked list Remove", t, func() {
+		Convey("Setup", func() {
+			l := NewSinglyLinkedList()
+
+			Convey("Test single element doubly linked list", func() {
+				e := l.PushBack(1)
+				l.Remove(e)
+				So(checkSinglyLinkedListPointers(l, []*Element{}), ShouldEqual, true)
+			})
+
+			Convey("Test more elements doubly linked list remove first element", func() {
+				e1 := l.PushBack(1)
+				e2 := l.PushBack(2)
+				e3 := l.PushBack(3)
+				l.Remove(e1)
+				So(checkSinglyLinkedListPointers(l, []*Element{e2, e3}), ShouldEqual, true)
+			})
+
+			Convey("Test more elements doubly linked list remove last element", func() {
+				e1 := l.PushBack(1)
+				e2 := l.PushBack(2)
+				e3 := l.PushBack(3)
+				l.Remove(e3)
+				So(checkSinglyLinkedListPointers(l, []*Element{e1, e2}), ShouldEqual, true)
+			})
+
+			Convey("Test more elements doubly linked list remove middle element", func() {
+				e1 := l.PushBack(1)
+				e2 := l.PushBack(2)
+				e3 := l.PushBack(3)
+				l.Remove(e2)
+				So(checkSinglyLinkedListPointers(l, []*Element{e1, e3}), ShouldEqual, true)
 			})
 		})
 	})
