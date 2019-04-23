@@ -60,3 +60,39 @@ func TestMergeSortedSinglyLinkedList(t *testing.T) {
 		})
 	})
 }
+
+func TestMiddleNode(t *testing.T) {
+	Convey("Test singly linked list middleNode", t, func() {
+		Convey("Setup", func() {
+			l := NewSinglyLinkedList()
+
+			Convey("Test empty singly linked list", func() {
+				m := middleNode(l)
+				So(m, ShouldBeNil)
+			})
+
+			Convey("Test single element singly linked list", func() {
+				e := l.PushBack(1)
+				m := middleNode(l)
+				So(m, ShouldEqual, e)
+			})
+
+			Convey("Test odd number of elements singly linked list", func() {
+				l.PushBack(1)
+				e2 := l.PushBack(2)
+				l.PushBack(3)
+				m := middleNode(l)
+				So(m, ShouldEqual, e2)
+			})
+
+			Convey("Test even number of elements singly linked list", func() {
+				l.PushBack(1)
+				l.PushBack(2)
+				e3 := l.PushBack(3)
+				l.PushBack(4)
+				m := middleNode(l)
+				So(m, ShouldEqual, e3)
+			})
+		})
+	})
+}

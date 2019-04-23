@@ -30,3 +30,19 @@ func mergeSortedSinglyLinkedList(l1, l2 *SinglyLinkedList, lessFn func(interface
 
 	return l3
 }
+
+func middleNode(l *SinglyLinkedList) *Element {
+	if l.len == 0 {
+		return nil
+	}
+	slow, fast := l.head.next, l.head.next
+	for fast.next != nil {
+		fast = fast.next.next
+		slow = slow.next
+		if fast == nil {
+			break
+		}
+	}
+
+	return slow
+}
