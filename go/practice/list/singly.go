@@ -1,5 +1,10 @@
 package list
 
+import (
+	"bytes"
+	"fmt"
+)
+
 // SinglyLinkedList represents a singly linked list.
 type SinglyLinkedList struct {
 	// sentinel list element
@@ -157,4 +162,18 @@ func (l *SinglyLinkedList) Reverse() {
 		current = n
 	}
 	l.head.next = prev
+}
+
+func (l *SinglyLinkedList) String() string {
+	var result bytes.Buffer
+	result.WriteString("singly linked list: ")
+	for p := l.head.next; p != nil; p = p.next {
+		if p.next == nil {
+			result.WriteString(fmt.Sprintf("%v", p.Value))
+		} else {
+			result.WriteString(fmt.Sprintf("%v ---> ", p.Value))
+		}
+	}
+
+	return result.String()
 }
