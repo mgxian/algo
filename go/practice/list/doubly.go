@@ -141,3 +141,22 @@ func (l *DoublyLinkedList) Remove(e *Element) interface{} {
 	l.remove(e)
 	return e.Value
 }
+
+// Reverse reverse the linked list
+func (l *DoublyLinkedList) Reverse() {
+	if l.len <= 1 {
+		return
+	}
+
+	var prev *Element
+	current := l.head.next
+	l.head.prev = current
+	for current != nil {
+		n := current.next
+		current.next = prev
+		current.prev = n
+		prev = current
+		current = n
+	}
+	l.head.next = prev
+}

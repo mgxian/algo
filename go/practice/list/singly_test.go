@@ -284,17 +284,17 @@ func TestSinglyLinkedListRemove(t *testing.T) {
 }
 
 func TestSinglyLinkedListReverse(t *testing.T) {
-	Convey("Test doubly linked list Reverse", t, func() {
+	Convey("Test singly linked list Reverse", t, func() {
 		Convey("Setup", func() {
 			l := NewSinglyLinkedList()
 
-			Convey("Test reverse single element doubly linked list", func() {
+			Convey("Test reverse single element singly linked list", func() {
 				e := l.PushBack(1)
 				l.Reverse()
 				So(checkSinglyLinkedListPointers(l, []*Element{e}), ShouldEqual, true)
 			})
 
-			Convey("Test reverse more elements doubly linked list", func() {
+			Convey("Test reverse more elements singly linked list", func() {
 				e1 := l.PushBack(1)
 				e2 := l.PushBack(2)
 				e3 := l.PushBack(3)
