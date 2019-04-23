@@ -12,12 +12,16 @@ var _ = Describe("Array", func() {
 		stack *ArrayStack
 	)
 
-	BeforeEach(func() {
-		stack = NewArrayStack(1)
-	})
+	Describe("Zero size array stack", func() {
+		BeforeEach(func() {
+			stack = NewArrayStack(0)
+		})
 
-	Describe("Test array stack length", func() {
-		It("should be a true", func() {
+		It("should return nil", func() {
+			Expect(stack).To(Equal(nil))
+		})
+
+		It("should return true", func() {
 			Expect(stack.IsEmpty()).To(Equal(true))
 		})
 	})
