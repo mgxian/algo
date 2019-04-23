@@ -119,3 +119,22 @@ func (l *CircularDoublyLinkedList) Remove(e *Element) interface{} {
 	l.remove(e)
 	return e.Value
 }
+
+// Reverse reverse the linked list
+func (l *CircularDoublyLinkedList) Reverse() {
+	if l.len <= 1 {
+		return
+	}
+
+	prev := &l.head
+	current := l.head.next
+	l.head.prev = l.head.next
+	for current != &l.head {
+		n := current.next
+		current.next = prev
+		current.prev = n
+		prev = current
+		current = n
+	}
+	l.head.next = prev
+}

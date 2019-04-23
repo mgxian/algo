@@ -1,7 +1,6 @@
 package list
 
 import (
-	"fmt"
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
@@ -29,15 +28,12 @@ func checkDoublyLinkedListNextPointers(l *DoublyLinkedList, es []*Element) bool 
 func checkDoublyLinkedListPrevPointers(l *DoublyLinkedList, es []*Element) bool {
 	for i, e := range es[:len(es)-1] {
 		if es[i+1].prev != e {
-			fmt.Println("middle")
 			return false
 		}
 	}
 	front := es[0]
 	back := es[len(es)-1]
 	if front.prev != nil && front.prev != &l.head || l.head.prev != back {
-		fmt.Println("head tail")
-		fmt.Println(front.prev, l.head.prev, back)
 		return false
 	}
 	return true
@@ -52,7 +48,6 @@ func checkEmptyDoublyLinkedListPointers(l *DoublyLinkedList) bool {
 
 func checkDoublyLinkedListPointers(l *DoublyLinkedList, es []*Element) bool {
 	if !checkDoublyLinkedListLen(l, es) {
-		fmt.Println("len")
 		return false
 	}
 
@@ -61,12 +56,10 @@ func checkDoublyLinkedListPointers(l *DoublyLinkedList, es []*Element) bool {
 	}
 
 	if !checkDoublyLinkedListNextPointers(l, es) {
-		fmt.Println("next")
 		return false
 	}
 
 	if !checkDoublyLinkedListPrevPointers(l, es) {
-		fmt.Println("prev")
 		return false
 	}
 
