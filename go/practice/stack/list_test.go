@@ -7,26 +7,26 @@ import (
 	. "github.com/mgxian/algo/go/practice/stack"
 )
 
-var _ = Describe("Array", func() {
-	Describe("create a array stack", func() {
+var _ = Describe("List", func() {
+	Describe("create a list stack", func() {
 		Context("when stack size is zero", func() {
-			stack := NewArrayStack(0)
+			stack := NewListStack(0)
 			It("should return nil", func() {
 				Expect(stack).To(BeNil())
 			})
 		})
 
 		Context("when stack size is greater than zero", func() {
-			stack := NewArrayStack(1)
+			stack := NewListStack(1)
 			It("should not return nil", func() {
 				Expect(stack).NotTo(BeNil())
 			})
 		})
 	})
 
-	Describe("push a element to array stack", func() {
+	Describe("push a element to list stack", func() {
 		Context("when stack size is one", func() {
-			stack := NewArrayStack(1)
+			stack := NewListStack(1)
 			It("should return right elements", func() {
 				e := stack.Push(1)
 				Expect(e).To(Equal(1))
@@ -39,7 +39,7 @@ var _ = Describe("Array", func() {
 		})
 
 		Context("when stack size is greater than one", func() {
-			stack := NewArrayStack(2)
+			stack := NewListStack(2)
 			It("should return right elements", func() {
 				e := stack.Push(1)
 				Expect(e).To(Equal(1))
@@ -53,9 +53,9 @@ var _ = Describe("Array", func() {
 		})
 	})
 
-	Describe("pop a element from array stack", func() {
+	Describe("pop a element from list stack", func() {
 		Context("when stack size is one", func() {
-			stack := NewArrayStack(1)
+			stack := NewListStack(1)
 			stack.Push(1)
 			It("should return right elements", func() {
 				e := stack.Pop()
@@ -69,7 +69,7 @@ var _ = Describe("Array", func() {
 		})
 
 		Context("when stack size is greater than one", func() {
-			stack := NewArrayStack(2)
+			stack := NewListStack(2)
 			stack.Push(1)
 			stack.Push(2)
 			It("should return right elements", func() {
@@ -84,9 +84,9 @@ var _ = Describe("Array", func() {
 		})
 	})
 
-	Describe("peek a element from array stack", func() {
+	Describe("peek a element from list stack", func() {
 		Context("when stack size is one", func() {
-			stack := NewArrayStack(1)
+			stack := NewListStack(1)
 
 			
 			It("should return right elements", func() {
@@ -103,7 +103,7 @@ var _ = Describe("Array", func() {
 		})
 
 		Context("when stack size is greater than one", func() {
-			stack := NewArrayStack(2)
+			stack := NewListStack(2)
 			stack.Push(1)
 			It("should return right elements", func() {
 				e1 := stack.Peek()
@@ -118,9 +118,9 @@ var _ = Describe("Array", func() {
 		})
 	})
 
-	Describe("check if array stack is empty", func() {
+	Describe("check if list stack is empty", func() {
 		Context("when stack size is one", func() {
-			stack := NewArrayStack(1)
+			stack := NewListStack(1)
 
 			It("should return true", func() {
 				Expect(stack.IsEmpty()).To(Equal(true))
@@ -136,7 +136,7 @@ var _ = Describe("Array", func() {
 		})
 
 		Context("when stack size is greater than one", func() {
-			stack := NewArrayStack(2)
+			stack := NewListStack(2)
 
 			It("should return true", func() {
 				Expect(stack.IsEmpty()).To(Equal(true))
@@ -154,9 +154,9 @@ var _ = Describe("Array", func() {
 		})
 	})
 
-	Describe("check if array stack is full", func() {
+	Describe("check if list stack is full", func() {
 		Context("when stack size is one", func() {
-			stack := NewArrayStack(1)
+			stack := NewListStack(1)
 
 			It("should return false", func() {
 				Expect(stack.IsFull()).To(Equal(false))
@@ -175,7 +175,7 @@ var _ = Describe("Array", func() {
 		})
 
 		Context("when stack size is greater than one", func() {
-			stack := NewArrayStack(2)
+			stack := NewListStack(2)
 
 			It("should return false", func() {
 				Expect(stack.IsFull()).To(Equal(false))
