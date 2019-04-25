@@ -31,7 +31,7 @@ func (s *ArrayStack) Push(e interface{}) interface{} {
 
 // Pop remove a element from top of stack.
 func (s *ArrayStack) Pop() interface{} {
-	if s.IsEmpty(){
+	if s.IsEmpty() {
 		return nil
 	}
 	result := s.data[s.top]
@@ -51,7 +51,7 @@ func (s *ArrayStack) IsFull() bool {
 
 // Peek get the value of the top element without removing it.
 func (s *ArrayStack) Peek() interface{} {
-	if s.IsEmpty(){
+	if s.IsEmpty() {
 		return nil
 	}
 	return s.data[s.top]
