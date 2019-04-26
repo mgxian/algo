@@ -34,18 +34,21 @@ var _ = Describe("Browser", func() {
 			})
 
 			It("should not return error", func() {
+				By("Goto A, B, C, D")
 				browser.Goto("A")
 				browser.Goto("B")
 				browser.Goto("C")
 				err := browser.Goto("D")
 				Expect(err).NotTo(HaveOccurred())
 
+				By("Back")
 				err = browser.Back()
 				Expect(err).NotTo(HaveOccurred())
 
 				curr := browser.CurrentPage()
 				Expect(curr).To(Equal("C"))
 
+				By("Goto E, F")
 				err = browser.Goto("E")
 				Expect(err).NotTo(HaveOccurred())
 
@@ -55,60 +58,70 @@ var _ = Describe("Browser", func() {
 				curr = browser.CurrentPage()
 				Expect(curr).To(Equal("F"))
 
+				By("Back")
 				err = browser.Back()
 				Expect(err).NotTo(HaveOccurred())
 
 				curr = browser.CurrentPage()
 				Expect(curr).To(Equal("E"))
 
+				By("Back")
 				err = browser.Back()
 				Expect(err).NotTo(HaveOccurred())
 
 				curr = browser.CurrentPage()
 				Expect(curr).To(Equal("C"))
 
+				By("Back")
 				err = browser.Back()
 				Expect(err).NotTo(HaveOccurred())
 
 				curr = browser.CurrentPage()
 				Expect(curr).To(Equal("B"))
 
+				By("Back")
 				err = browser.Back()
 				Expect(err).NotTo(HaveOccurred())
 
 				curr = browser.CurrentPage()
 				Expect(curr).To(Equal("A"))
 
+				By("Back")
 				err = browser.Back()
 				Expect(err).To(HaveOccurred())
 
 				curr = browser.CurrentPage()
 				Expect(curr).To(Equal("A"))
 
+				By("Forward")
 				err = browser.Forward()
 				Expect(err).NotTo(HaveOccurred())
 
 				curr = browser.CurrentPage()
 				Expect(curr).To(Equal("B"))
 
+				By("Forward")
 				err = browser.Forward()
 				Expect(err).NotTo(HaveOccurred())
 
 				curr = browser.CurrentPage()
 				Expect(curr).To(Equal("C"))
 
+				By("Forward")
 				err = browser.Forward()
 				Expect(err).NotTo(HaveOccurred())
 
 				curr = browser.CurrentPage()
 				Expect(curr).To(Equal("E"))
 
+				By("Back")
 				err = browser.Back()
 				Expect(err).NotTo(HaveOccurred())
 
 				curr = browser.CurrentPage()
 				Expect(curr).To(Equal("C"))
 
+				By("Forward")
 				err = browser.Forward()
 				Expect(err).NotTo(HaveOccurred())
 
