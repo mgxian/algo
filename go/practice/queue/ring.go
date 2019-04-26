@@ -1,14 +1,19 @@
 package queue
 
+// RingQueue represents a ring queue
 type RingQueue struct {
 	capacity int // number of elements
-	size     int // capacity + 1, data slice size, ring queue waste one postion.
+	size     int // capacity + 1, data size, ring queue waste one postion.
 	front    int
 	rear     int
 	data     []interface{}
 }
 
+// NewRingQueue creates a new initial ring queue
 func NewRingQueue(n int) *RingQueue {
+	if n < 1 {
+		return nil
+	}
 	return &RingQueue{
 		capacity: n,
 		size:     n + 1,
@@ -50,4 +55,11 @@ func (q *RingQueue) IsFull() bool {
 }
 
 // Peek get the value of the front of queue without removing it.
-func (q *RingQueue) Peek() interface{} {}
+func (q *RingQueue) Peek() interface{} {
+	if q.IsEmpty() {
+		return nil
+	}
+
+	e := q.data[q.front]
+	return e
+}
