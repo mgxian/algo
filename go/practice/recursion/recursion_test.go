@@ -49,4 +49,47 @@ var _ = Describe("Recursion", func() {
 			})
 		})
 	})
+
+
+	Describe("factorial", func() {
+		Context("n = 0", func() {
+			n := 0
+			It("should return 1", func() {
+				result := Factorial(n)
+				Expect(result).To(Equal(1))
+			})
+		})
+
+		Context("n = 1", func() {
+			n := 1
+			It("should return 1", func() {
+				result := Factorial(n)
+				Expect(result).To(Equal(1))
+			})
+		})
+
+		Context("n = 2", func() {
+			n := 2
+			It("should return 2", func() {
+				result := Factorial(n)
+				Expect(result).To(Equal(2))
+			})
+		})
+
+		Context("n = 3", func() {
+			n := 3
+			It("should return 6", func() {
+				result := Factorial(n)
+				Expect(result).To(Equal(6))
+			})
+		})
+
+		Context("n = 4", func() {
+			n := 4
+			It("should return 24", func() {
+				result := Factorial(n)
+				Expect(result).To(Equal(24))
+			})
+		})
+	})
 })
