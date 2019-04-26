@@ -50,7 +50,6 @@ var _ = Describe("Recursion", func() {
 		})
 	})
 
-
 	Describe("factorial", func() {
 		Context("n = 0", func() {
 			n := 0
@@ -89,6 +88,43 @@ var _ = Describe("Recursion", func() {
 			It("should return 24", func() {
 				result := Factorial(n)
 				Expect(result).To(Equal(24))
+			})
+		})
+	})
+
+	Describe("permutation", func() {
+		Context("[]", func() {
+			data := []int{}
+			It("should return 1", func() {
+				Permutation(data, 0, len(data)-1)
+			})
+		})
+
+		Context("[0]", func() {
+			data := []int{0}
+			It("should return 1", func() {
+				Permutation(data, 0, len(data)-1)
+			})
+		})
+
+		Context("[1, 2]", func() {
+			data := []int{1, 2}
+			It("should return 1", func() {
+				Permutation(data, 0, len(data)-1)
+			})
+		})
+
+		Context("[1, 2, 3]", func() {
+			data := []int{1, 2, 3}
+			It("should return 1", func() {
+				Permutation(data, 0, len(data)-1)
+			})
+		})
+
+		Context("[1, 2, 3, 4]", func() {
+			data := []int{1, 2, 3, 4}
+			It("should return 1", func() {
+				Permutation(data, 0, len(data)-1)
 			})
 		})
 	})
