@@ -1,0 +1,15 @@
+package sort
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func TestQuickSort(t *testing.T) {
+	nums := []int{9, 6, 7, 4, 5, 1, 2, 3, 8}
+	quickSort(MyInts(nums), 0, len(nums)-1)
+
+	expected := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+	assert.Equal(t, expected, nums)
+}
