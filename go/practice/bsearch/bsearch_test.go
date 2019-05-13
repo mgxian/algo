@@ -53,3 +53,35 @@ func TestBinarySearchLastEqual(t *testing.T) {
 	i = binarySearchLastEqual(nums, 30)
 	assert.Equal(t, -1, i)
 }
+
+func TestBinarySearchFirstEqualOrGreaterThan(t *testing.T) {
+	nums := []int{7, 9, 10, 11, 11, 11, 12, 15, 20}
+
+	i := binarySearchFirstEqualOrGreaterThan(nums, 7)
+	assert.Equal(t, 0, i)
+
+	i = binarySearchFirstEqualOrGreaterThan(nums, 8)
+	assert.Equal(t, 1, i)
+
+	i = binarySearchFirstEqualOrGreaterThan(nums, 11)
+	assert.Equal(t, 3, i)
+
+	i = binarySearchFirstEqualOrGreaterThan(nums, 30)
+	assert.Equal(t, -1, i)
+}
+
+func TestBinaryLastEqualOrLessThan(t *testing.T) {
+	nums := []int{7, 9, 10, 11, 11, 11, 12, 15, 20}
+
+	i := binarySearchLastEqualOrLessThan(nums, 7)
+	assert.Equal(t, 0, i)
+
+	i = binarySearchLastEqualOrLessThan(nums, 8)
+	assert.Equal(t, 0, i)
+
+	i = binarySearchLastEqualOrLessThan(nums, 11)
+	assert.Equal(t, 5, i)
+
+	i = binarySearchLastEqualOrLessThan(nums, 30)
+	assert.Equal(t, 8, i)
+}
