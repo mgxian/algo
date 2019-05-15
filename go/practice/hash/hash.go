@@ -12,14 +12,14 @@ type kv struct {
 }
 
 type hashMap struct {
-	data       []list.List
-	bucketSize int
+	data        []list.List
+	bucketCount int
 }
 
-func newHashMap(bucketSize int) *hashMap {
+func newHashMap(bucketCount int) *hashMap {
 	return &hashMap{
-		data:       make([]list.List, bucketSize),
-		bucketSize: bucketSize,
+		data:        make([]list.List, bucketCount),
+		bucketCount: bucketCount,
 	}
 }
 
@@ -73,5 +73,5 @@ func (hm *hashMap) hashCode(key string) int {
 	for _, c := range []byte(key) {
 		code += int(c)
 	}
-	return code % hm.bucketSize
+	return code % hm.bucketCount
 }
