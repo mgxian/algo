@@ -3,6 +3,8 @@ package hash
 import (
 	"strconv"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestLRUCache(t *testing.T) {
@@ -12,14 +14,29 @@ func TestLRUCache(t *testing.T) {
 
 	for i := 0; i < kvCount; i++ {
 		idx := strconv.Itoa(i)
-		lc.set(k+idx, v+idx)
+		err := lc.set(k+idx, v+idx)
+		assert.NoError(t, err)
 	}
 
-	t.Log(lc.String())
+	err := lc.set(k, v)
+	assert.Equal(t, nil, err)
 
-	// for i := 0; i < kvCount; i++ {
-	// 	idx := strconv.Itoa(i)
-	// 	v, _ := lc.get(k + idx)
-	// 	t.Log(v)
-	// }
+	for i := 1; i < kvCount; i += 3 {
+		idx := strconv.Itoa(i)
+		iv, ok := lc.get(k + idx)
+		assert.Equal(t, v+idx, iv)
+		assert.Equal(t, true, ok)
+	}
+
+	iv, ok := lc.get("will0")
+	assert.Equal(t, "", iv)
+	assert.Equal(t, false, ok)
+
+	for i := 1; i < kvCount; i += 5 {
+		idx := strconv.Itoa(i)
+		iv := lc.delete(k + idx)
+		assert.Equal(t, v+idx, iv)
+	}
+
+	assert.Equal(t, "", lc.delete("will0"))
 }

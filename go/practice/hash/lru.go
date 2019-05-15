@@ -1,6 +1,7 @@
 package hash
 
 import (
+	"errors"
 	"fmt"
 	"strings"
 )
@@ -239,31 +240,41 @@ func (lru *lruCache) exist(key string) bool {
 	return true
 }
 
-func (lru *lruCache) set(key string, value string) {
+func (lru *lruCache) set(key string, value string) error {
 	code := lru.hashCode(key)
 	l := lru.data[code]
 
 	_, curr, _ := l.findBykey(key)
 	if curr != nil {
-		fmt.Println("exist", key, curr.value)
 		curr.value = value
 		lru.ldl.moveToBack(curr)
-		return
+		return nil
 	}
 
-	// fmt.Println("not exist", key)
-	if e := l.pushBack(key, value); e != nil {
-		lru.ldl.pushBack(e)
+	if lru.ldl.len >= lru.capacity {
+		oldest := lru.ldl.head.next
+		lru.delete(oldest.key)
 	}
+
+	e := l.pushBack(key, value)
+	if e != nil {
+		lru.ldl.pushBack(e)
+		return nil
+	}
+
+	return errors.New("internal error")
 }
 
-func (lru *lruCache) delete(key string) {
+func (lru *lruCache) delete(key string) string {
 	code := lru.hashCode(key)
 	l := lru.data[code]
 
 	if e := l.remove(key); e != nil {
 		lru.ldl.remove(e)
+		return e.value
 	}
+
+	return ""
 }
 
 func (lru *lruCache) get(key string) (string, bool) {
@@ -271,6 +282,7 @@ func (lru *lruCache) get(key string) (string, bool) {
 	l := lru.data[code]
 	_, curr, v := l.findBykey(key)
 	if curr != nil {
+		lru.ldl.moveToBack(curr)
 		return v, true
 	}
 	return "", false
