@@ -22,22 +22,39 @@ func isLess(data []int, p, c int) bool {
 	return false
 }
 
-func isHeap(data []int) bool {
+func isGreater(data []int, p, c int) bool {
+	if c < len(data) && data[p] > data[c] {
+		return true
+	}
+	return false
+}
+
+type compareFunc func([]int, int, int) bool
+
+func isHeap(data []int, fn compareFunc) bool {
 	if len(data) < 2 {
 		return true
 	}
 
 	for p := 0; p < len(data); p++ {
-		if isLess(data, p, leftChild(p)) {
+		if fn(data, p, leftChild(p)) {
 			return false
 		}
 
-		if isLess(data, p, rightChild(p)) {
+		if fn(data, p, rightChild(p)) {
 			return false
 		}
 	}
 
 	return true
+}
+
+func isMaxHeap(data []int) bool {
+	return isHeap(data, isLess)
+}
+
+func isMinHeap(data []int) bool {
+	return isHeap(data, isGreater)
 }
 
 func heapifyFromBottomToTop(data []int, i int) {
