@@ -2,6 +2,7 @@ package graph
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 
@@ -182,4 +183,64 @@ func (uwg *directedWeightedGraph) depthFirstTraversal() string {
 	}
 
 	return result.String()
+}
+
+func (uwg *directedWeightedGraph) shortestPath(s, t int) string {
+	distances := make([]int, len(uwg.adjacencyList))
+	visited := make([]bool, len(uwg.adjacencyList))
+	prev := make([]int, len(uwg.adjacencyList))
+	for i := range distances {
+		distances[i] = math.MaxInt64
+		prev[i] = -1
+	}
+	distances[s] = 0
+
+	getNotVisitedMinDistanceNode := func() int {
+		min := math.MaxInt64
+		minIndex := -1
+		for i, v := range distances {
+			if v < min && visited[i] != true {
+				minIndex = i
+			}
+		}
+		return minIndex
+	}
+
+	generatePath := func() string {
+		path := make([]int, 0)
+		p := t
+		for p != -1 {
+			path = append(path, p)
+			p = prev[p]
+		}
+
+		result := ""
+		for i := len(path) - 1; i >= 0; i-- {
+			result += " " + strconv.Itoa(path[i])
+		}
+
+		if strings.HasPrefix(result, " ") {
+			return result[1:]
+		}
+
+		return result
+	}
+
+	for {
+		node := getNotVisitedMinDistanceNode()
+		if node == -1 {
+			return generatePath()
+		}
+
+		p := uwg.adjacencyList[node].Front()
+		for p != nil {
+			e := p.Value.(edge)
+			if distances[node]+e.weight < distances[e.destnation] {
+				distances[e.destnation] = distances[node] + e.weight
+				prev[e.destnation] = node
+			}
+			p = p.Next()
+		}
+		visited[node] = true
+	}
 }
