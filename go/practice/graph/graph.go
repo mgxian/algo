@@ -156,3 +156,30 @@ func (uwg *directedWeightedGraph) breadthFirstTraversal() string {
 
 	return result.String()
 }
+
+func (uwg *directedWeightedGraph) dfs(node int, visited map[int]bool, result *strings.Builder) {
+	if _, ok := visited[node]; ok {
+		return
+	}
+
+	result.WriteString(" " + strconv.Itoa(node))
+	visited[node] = true
+	p := uwg.adjacencyList[node].Front()
+	for p != nil {
+		uwg.dfs(p.Value.(edge).destnation, visited, result)
+		p = p.Next()
+	}
+}
+
+func (uwg *directedWeightedGraph) depthFirstTraversal() string {
+	result := new(strings.Builder)
+
+	visited := make(map[int]bool, 0)
+	uwg.dfs(0, visited, result)
+
+	if strings.HasPrefix(result.String(), " ") {
+		return result.String()[1:]
+	}
+
+	return result.String()
+}
