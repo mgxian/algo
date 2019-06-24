@@ -51,4 +51,10 @@ func TestDirectedWeightedGraph(t *testing.T) {
 	if got != want {
 		t.Errorf("got '%s', want '%s'", got, want)
 	}
+
+	got = graph.breadthFirstTraversal()
+	want = "0 1 4 2 3 5"
+	if got != want {
+		t.Errorf("got '%s', want '%s'", got, want)
+	}
 }

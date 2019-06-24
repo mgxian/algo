@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/mgxian/algo/go/practice/list"
+	"github.com/mgxian/algo/go/practice/queue"
 )
 
 type undirectedGraph struct {
@@ -116,6 +117,35 @@ func (uwg *directedWeightedGraph) String() string {
 		for p != nil {
 			e := p.Value.(edge)
 			result.WriteString(" " + e.String())
+			p = p.Next()
+		}
+	}
+
+	if strings.HasPrefix(result.String(), " ") {
+		return result.String()[1:]
+	}
+
+	return result.String()
+}
+
+func (uwg *directedWeightedGraph) breadthFirstTraversal() string {
+	result := new(strings.Builder)
+
+	root := 0
+	visited := make(map[int]bool, 0)
+	q := queue.NewListQueue(len(uwg.adjacencyList))
+	q.Enqueue(root)
+
+	for !q.IsEmpty() {
+		node := q.Dequeue().(int)
+		if _, ok := visited[node]; ok {
+			continue
+		}
+		visited[node] = true
+		result.WriteString(" " + strconv.Itoa(node))
+		p := uwg.adjacencyList[node].Front()
+		for p != nil {
+			q.Enqueue(p.Value.(edge).destnation)
 			p = p.Next()
 		}
 	}
